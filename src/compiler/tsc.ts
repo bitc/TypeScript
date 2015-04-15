@@ -1,6 +1,9 @@
 /// <reference path="program.ts"/>
 /// <reference path="commandLineParser.ts"/>
 
+declare var require: any;
+var net: any = require('net');
+
 module ts {
     export interface SourceFile {
         fileWatcher: FileWatcher;
@@ -201,6 +204,18 @@ module ts {
             }
         }
 
+        var PORT: number = 2567;
+
+        if (commandLine.options.server) {
+            net.createServer(function(sock : any) {
+                sys.write = function(str) {
+                    sock.write(str);
+                };
+                performCompilation();
+                sock.end();
+            }).listen(PORT);
+        }
+
         performCompilation();
 
         // Invoked to perform initial compilation or re-compilation in watch mode
@@ -232,12 +247,14 @@ module ts {
 
             var compileResult = compile(rootFileNames, compilerOptions, compilerHost);
 
-            if (!compilerOptions.watch) {
+            if (compilerOptions.watch) {
+                setCachedProgram(compileResult.program);
+                reportDiagnostic(createCompilerDiagnostic(Diagnostics.Compilation_complete_Watching_for_file_changes));
+            } else if(compilerOptions.server) {
+                // Nothing
+            } else {
                 return sys.exit(compileResult.exitStatus);
             }
-
-            setCachedProgram(compileResult.program);
-            reportDiagnostic(createCompilerDiagnostic(Diagnostics.Compilation_complete_Watching_for_file_changes));
         }
 
         function getSourceFile(fileName: string, languageVersion: ScriptTarget, onError ?: (message: string) => void) {

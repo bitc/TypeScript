@@ -1832,6 +1832,10 @@
         "category": "Message",
         "code": 6010
     },
+    "Start compiler server.": {
+        "category": "Message",
+        "code": 6011
+    },
     "Specify ECMAScript target version: 'ES3' (default), 'ES5', or 'ES6' (experimental)": {
         "category": "Message",
         "code": 6015

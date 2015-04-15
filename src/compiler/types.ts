@@ -1656,6 +1656,7 @@ module ts {
         target?: ScriptTarget;
         version?: boolean;
         watch?: boolean;
+        server?: boolean;
         separateCompilation?: boolean;
         emitDecoratorMetadata?: boolean;
         /* @internal */ stripInternal?: boolean;

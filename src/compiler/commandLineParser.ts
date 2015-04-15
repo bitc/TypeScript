@@ -158,6 +158,11 @@ module ts {
             description: Diagnostics.Watch_input_files,
         },
         {
+            name: "server",
+            type: "boolean",
+            description: Diagnostics.Start_compiler_server,
+        },
+        {
             name: "emitDecoratorMetadata",
             type: "boolean",
             experimental: true
